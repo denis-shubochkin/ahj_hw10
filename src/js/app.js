@@ -259,8 +259,8 @@ function addAudio(src,coordsRes) {
   post.appendChild(circle);
   playBut.addEventListener('click', () => {
     audio.play();
-    audio.addEventListener('playing', () => {
-      console.log(audio.currentTime)
-    })
   });
+  audio.addEventListener('playing', () => {
+    console.log(audio.currentTime)
+  })
 }
