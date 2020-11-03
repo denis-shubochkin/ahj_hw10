@@ -7,7 +7,13 @@ const ok = document.querySelector('.ok');
 const label = document.querySelector('.label');
 const audioBut = document.querySelector('.audio-button');
 const videoBut = document.querySelector('.video-button');
-const audio = document.querySelector('.audio');
+const saveBut = document.querySelector('.save-button');
+const cancelBut = document.querySelector('.cancel-button');
+const timer = document.querySelector('.timer');
+let seconds = 0;
+let minutes = 0;
+let currentSource;
+let srcAudio;
 
 function placeAudioVideo() {
   const {top, left} = input.getBoundingClientRect();
@@ -15,9 +21,29 @@ function placeAudioVideo() {
   audioBut.style.left = `${left + input.offsetWidth - 100}px`;
   videoBut.style.top = `${top - 5}px`;
   videoBut.style.left = `${left + input.offsetWidth - 50}px`;
+  saveBut.style.top = `${top - 5}px`;
+  saveBut.style.left = `${left + input.offsetWidth - 130}px`;
+  cancelBut.style.top = `${top - 5}px`;
+  cancelBut.style.left = `${left + input.offsetWidth - 30}px`;
+  cancelBut.style.top = `${top - 5}px`;
+  cancelBut.style.left = `${left + input.offsetWidth - 90}px`;
 }
 
 placeAudioVideo();
+
+function timerC() {
+  seconds += 1;
+  let secondsRes = seconds.toString().padStart(2,0);
+  if(seconds === 60)
+  {
+    seconds = 0;
+    secondsRes = seconds.toString().padStart(2,0);
+    minutes+=1;
+    minutesRes = minutes.toString().padStart(2,0)
+  }
+  let minutesRes = minutes.toString().padStart(2,0);
+  timer.textContent = `${minutesRes}:${secondsRes}`;
+}
 
 audioBut.addEventListener('click' , () => {
   (async() => {
@@ -48,13 +74,35 @@ audioBut.addEventListener('click' , () => {
       recorder.addEventListener('stop', () => {
         console.log('recording stop');
         const blob = new Blob(chunks);
-        audio.src = URL.createObjectURL(blob);
-      })
+        srcAudio = URL.createObjectURL(blob);
+          if(navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition((pos) => {
+              let coordsRes = pos.coords;
+              addAudio(srcAudio, coordsRes);
+            }, () => {
+              currentSource = 'audio';
+              enterCoords.style.display = 'block';
+              input.setAttribute("readonly", true);
+            });
+          }
+          saveBut.removeEventListener('click', saveAudio);
+        })
+      audioBut.style.display = 'none';
+      videoBut.style.display = 'none';
+      saveBut.style.display = 'block';
+      cancelBut.style.display = 'block';
+      timer.style.display = 'block';
+      setInterval(timerC,1000);
       recorder.start();
-      setTimeout(()=> {
-        recorder.stop();
-        stream.getTracks().forEach(track => track.stop());
-      },5000)
+      
+      function saveAudio() {
+          clearInterval(timerC);
+          minutes = 0;
+          seconds = 0;
+          recorder.stop();
+          stream.getTracks().forEach(track => track.stop());
+      }
+      saveBut.addEventListener('click', saveAudio)
     }
     catch (e) {
       console.error(e);
@@ -80,17 +128,25 @@ function userCoords(string) {
   throw new Error('Введен некорректный формат данных');
 }
 
-ok.addEventListener('click', () => {
+function coordsWidget(currentSource) {
   let string = inputCoords.value;
   try 
   {
     let obj = userCoords(string);
     if(obj.result)
     {
-        addText(input.value, {latitude: obj.latitude, longitude: obj.longitude});
-        enterCoords.style.display = 'none';
-        inputCoords.value = '';
-        input.removeAttribute("readonly", true);
+        if(currentSource === 'text')
+        {
+          addText(input.value, {latitude: obj.latitude, longitude: obj.longitude});
+          enterCoords.style.display = 'none';
+          inputCoords.value = '';
+          input.removeAttribute("readonly", true);
+        }
+        else if (currentSource === 'audio') {
+          addAudio(srcAudio, {latitude: obj.latitude, longitude: obj.longitude});
+          enterCoords.style.display = 'none';
+          inputCoords.value = '';
+        }
     }
   }
   catch(e)
@@ -101,6 +157,10 @@ ok.addEventListener('click', () => {
       alert(e);
     } 
   }
+}
+
+ok.addEventListener('click', () => {
+  coordsWidget(currentSource);
 })
 
 input.addEventListener('keyup' , (evt) => {
@@ -110,9 +170,10 @@ input.addEventListener('keyup' , (evt) => {
         let coordsRes = pos.coords;
         addText(evt.target.value, coordsRes);
       }, () => {
+        currentSource = 'text';
         enterCoords.style.display = 'block';
         input.setAttribute("readonly", true);
-      })
+      });
     }
   }
 })
@@ -140,4 +201,32 @@ function addText(text,coordsRes) {
   circle.classList.add('circle');
   post.appendChild(circle);
   input.value = '';
+}
+
+function addAudio(src,coordsRes) {
+  let date = new Date().toLocaleString();
+  let post = document.createElement('div');
+  post.classList.add('post');
+  posts.prepend(post);
+  let dateEl = document.createElement('div');
+  dateEl.classList.add('date');
+  dateEl.textContent = date;
+  post.appendChild(dateEl);
+  let playBut = document.createElement('button');
+  playBut.classList.add('audio-content');
+  post.appendChild(playBut);
+  let audio = document.createElement('audio');
+  audio.classList.add('audio');
+  audio.src = src;
+  post.appendChild(audio);
+  let coords = document.createElement('div');
+  coords.classList.add('coords');
+  coords.textContent = `[${coordsRes.latitude.toFixed(5)}, ${coordsRes.longitude.toFixed(5)}]`;
+  post.appendChild(coords);
+  let circle = document.createElement('div');
+  circle.classList.add('circle');
+  post.appendChild(circle);
+  playBut.addEventListener('click', () => {
+    audio.play();
+  });
 }

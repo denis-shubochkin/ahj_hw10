@@ -136,3 +136,43 @@ body {
   background-repeat: no-repeat;
   background-size: cover;
 }
+
+.save-button {
+  display: none;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  width: 30px;
+  height: 30px;
+  position: absolute;
+  background-image: url('../pic/save.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.cancel-button {
+  display: none;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  width: 30px;
+  height: 30px;
+  position: absolute;
+  background-image: url('../pic/cancel.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.timer {
+  display: none;
+  background-color: white;
+  width: 70px;
+  height: 30px;
+  position: absolute;
+}
+
+.audio-content {
+  border: none;
+  outline: none;
+  background-image: url('../pic/play.png');
+}
