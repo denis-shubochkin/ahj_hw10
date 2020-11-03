@@ -24,7 +24,7 @@ function placeAudioVideo() {
   saveBut.style.top = `${top - 5}px`;
   saveBut.style.left = `${left + input.offsetWidth - 130}px`;
   cancelBut.style.top = `${top - 5}px`;
-  cancelBut.style.left = `${left + input.offsetWidth - 30}px`;
+  cancelBut.style.left = `${left + input.offsetWidth - 20}px`;
   timer.style.top = `${top - 5}px`;
   timer.style.left = `${left + input.offsetWidth - 90}px`;
 }
@@ -85,6 +85,11 @@ audioBut.addEventListener('click' , () => {
               input.setAttribute("readonly", true);
             });
           }
+          audioBut.style.display = 'block';
+          videoBut.style.display = 'block';
+          saveBut.style.display = 'none';
+          cancelBut.style.display = 'none';
+          timer.style.display = 'none';
           saveBut.removeEventListener('click', saveAudio);
         })
       audioBut.style.display = 'none';
@@ -96,7 +101,7 @@ audioBut.addEventListener('click' , () => {
       recorder.start();
       
       function saveAudio() {
-          clearInterval(timerC);
+          clearInterval(timerC,1000);
           minutes = 0;
           seconds = 0;
           recorder.stop();
