@@ -97,11 +97,11 @@ audioBut.addEventListener('click' , () => {
       saveBut.style.display = 'block';
       cancelBut.style.display = 'block';
       timer.style.display = 'block';
-      setInterval(timerC,1000);
+      let intId = setInterval(timerC,1000);
       recorder.start();
       
       function saveAudio() {
-          clearInterval(timerC,1000);
+          clearInterval(intId);
           minutes = 0;
           seconds = 0;
           recorder.stop();
