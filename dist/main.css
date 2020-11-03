@@ -182,4 +182,10 @@ body {
   cursor: pointer;
 }
 
+.time-line {
+  width: 90%;
+  height: 2px;
+  background-color: black;
+}
+
 /*# sourceMappingURL=main.css.map*/

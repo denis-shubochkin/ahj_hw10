@@ -14,6 +14,7 @@ let seconds = 0;
 let minutes = 0;
 let currentSource;
 let srcAudio;
+let recordMode;
 
 function placeAudioVideo() {
   const {top, left} = input.getBoundingClientRect();
@@ -73,25 +74,36 @@ audioBut.addEventListener('click' , () => {
       });
       recorder.addEventListener('stop', () => {
         console.log('recording stop');
-        const blob = new Blob(chunks);
-        srcAudio = URL.createObjectURL(blob);
-          if(navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition((pos) => {
-              let coordsRes = pos.coords;
-              addAudio(srcAudio, coordsRes);
-            }, () => {
-              currentSource = 'audio';
-              enterCoords.style.display = 'block';
-              input.setAttribute("readonly", true);
-            });
-          }
-          audioBut.style.display = 'block';
-          videoBut.style.display = 'block';
-          saveBut.style.display = 'none';
-          cancelBut.style.display = 'none';
-          timer.style.display = 'none';
-          saveBut.removeEventListener('click', saveAudio);
-        })
+        if(recordMode==='save')
+        {
+          const blob = new Blob(chunks);
+          srcAudio = URL.createObjectURL(blob);
+            if(navigator.geolocation) {
+              navigator.geolocation.getCurrentPosition((pos) => {
+                let coordsRes = pos.coords;
+                addAudio(srcAudio, coordsRes);
+              }, () => {
+                currentSource = 'audio';
+                enterCoords.style.display = 'block';
+                input.setAttribute("readonly", true);
+              });
+            }
+            audioBut.style.display = 'block';
+            videoBut.style.display = 'block';
+            saveBut.style.display = 'none';
+            cancelBut.style.display = 'none';
+            timer.style.display = 'none';
+            saveBut.removeEventListener('click', saveAudio);
+        }
+        else {
+            audioBut.style.display = 'block';
+            videoBut.style.display = 'block';
+            saveBut.style.display = 'none';
+            cancelBut.style.display = 'none';
+            timer.style.display = 'none';
+            saveBut.removeEventListener('click', saveAudio);
+        }
+      })
       audioBut.style.display = 'none';
       videoBut.style.display = 'none';
       saveBut.style.display = 'block';
@@ -101,13 +113,24 @@ audioBut.addEventListener('click' , () => {
       recorder.start();
       
       function saveAudio() {
+        recordMode = 'save';
           clearInterval(intId);
           minutes = 0;
           seconds = 0;
           recorder.stop();
           stream.getTracks().forEach(track => track.stop());
       }
+
+      function cancelAudio() {
+        recordMode = 'cancel';
+        clearInterval(intId);
+          minutes = 0;
+          seconds = 0;
+          recorder.stop();
+          stream.getTracks().forEach(track => track.stop());
+      }
       saveBut.addEventListener('click', saveAudio)
+      cancelBut.addEventListener('click', cancelAudio);
     }
     catch (e) {
       console.error(e);
@@ -220,6 +243,9 @@ function addAudio(src,coordsRes) {
   let playBut = document.createElement('button');
   playBut.classList.add('audio-content');
   post.appendChild(playBut);
+  let timeLine = document.createElement('div');
+  timeLine.classList.add('time-line');
+  post.appendChild(timeLine);
   let audio = document.createElement('audio');
   audio.classList.add('audio');
   audio.src = src;
@@ -233,5 +259,8 @@ function addAudio(src,coordsRes) {
   post.appendChild(circle);
   playBut.addEventListener('click', () => {
     audio.play();
+    audio.addEventListener('playing', () => {
+      console.log(audio.currentTime)
+    })
   });
 }
