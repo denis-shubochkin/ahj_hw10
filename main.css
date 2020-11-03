@@ -137,4 +137,44 @@ body {
   background-size: cover;
 }
 
+.save-button {
+  display: none;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  width: 30px;
+  height: 30px;
+  position: absolute;
+  background-image: url(f716c0cf22acaf72b07de44fbeec81b8.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.cancel-button {
+  display: none;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  width: 30px;
+  height: 30px;
+  position: absolute;
+  background-image: url(1f8c989dfed01afda9d96f86c9556607.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.timer {
+  display: none;
+  background-color: white;
+  width: 70px;
+  height: 30px;
+  position: absolute;
+}
+
+.audio-content {
+  border: none;
+  outline: none;
+  background-image: url(b13d0c1a922eb782bbbbda811ac42ac7.png);
+}
+
 /*# sourceMappingURL=main.css.map*/
