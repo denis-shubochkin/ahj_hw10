@@ -25,8 +25,8 @@ function placeAudioVideo() {
   saveBut.style.left = `${left + input.offsetWidth - 130}px`;
   cancelBut.style.top = `${top - 5}px`;
   cancelBut.style.left = `${left + input.offsetWidth - 30}px`;
-  cancelBut.style.top = `${top - 5}px`;
-  cancelBut.style.left = `${left + input.offsetWidth - 90}px`;
+  timer.style.top = `${top - 5}px`;
+  timer.style.left = `${left + input.offsetWidth - 90}px`;
 }
 
 placeAudioVideo();
