@@ -187,3 +187,10 @@ body {
   height: 2px;
   background-color: black;
 }
+
+.ball {
+  background-color: black;
+  width: 10px;
+  height: 10px;
+  position: absolute;
+}

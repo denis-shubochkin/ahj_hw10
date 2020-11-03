@@ -246,6 +246,12 @@ function addAudio(src,coordsRes) {
   let timeLine = document.createElement('div');
   timeLine.classList.add('time-line');
   post.appendChild(timeLine);
+  let ball = document.createElement('div');
+  ball.classList.add('ball');
+  post.appendChild(ball);
+  const {top,left} = timeLine.getBoundingClientRect();
+  ball.style.top = `${top}px`;
+  ball.style.left = `${left+5}px`;
   let audio = document.createElement('audio');
   audio.classList.add('audio');
   audio.src = src;
@@ -260,7 +266,12 @@ function addAudio(src,coordsRes) {
   playBut.addEventListener('click', () => {
     audio.play();
   });
+  //const posMax = left + timeLine.offsetWidth;
+  const iteration = timeLine.offsetWidth/audio.duration;
+  function draw() {
+    ball.style.left =  `${ball.style.left + iteration}px`;
+  }
   audio.addEventListener('timeupdate', (evt) => {
-    console.log(evt);
+    window.requestAnimationFrame(draw);
   })
 }
