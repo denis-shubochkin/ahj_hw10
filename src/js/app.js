@@ -260,7 +260,7 @@ function addAudio(src,coordsRes) {
   playBut.addEventListener('click', () => {
     audio.play();
   });
-  audio.addEventListener('play', (evt) => {
+  audio.addEventListener('timeupdate', (evt) => {
     console.log(evt);
   })
 }
