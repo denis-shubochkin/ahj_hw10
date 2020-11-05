@@ -204,7 +204,7 @@ body {
   width: 400px;
   height: 200px;
   position: absolute;
-  z-index: 0;
+  z-index: 9;
 }
 
 .play-button-video {

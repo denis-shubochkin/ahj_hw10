@@ -467,6 +467,7 @@ function addVideo(src,coordsRes) { //
   circle.classList.add('circle');
   post.appendChild(circle);
   playBut.addEventListener('click', () => {
+    playBut.style.display = 'none';
     videoRecord.play();
     let animation = ball.animate([
       {left: '0px'},
@@ -482,6 +483,7 @@ function addVideo(src,coordsRes) { //
   //   ball.style.left =  `${ball.getBoundingClientRect().left + timeLine.offsetWidth/}px`;
   // })
   videoRecord.addEventListener('ended', () => {
+    playBut.style.display = 'block';
     ball.style.left = `0px`;
   })
 }
