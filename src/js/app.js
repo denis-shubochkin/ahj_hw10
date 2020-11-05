@@ -12,6 +12,7 @@ const cancelBut = document.querySelector('.cancel-button');
 const timer = document.querySelector('.timer');
 let seconds = 0;
 let minutes = 0;
+let secondsSum = 0;
 let currentSource;
 let srcAudio;
 let recordMode;
@@ -36,6 +37,7 @@ placeAudioVideo();
 
 function timerC() {
   seconds += 1;
+  secondsSum += 1;
   let secondsRes = seconds.toString().padStart(2,0);
   if(seconds === 60)
   {
@@ -269,7 +271,8 @@ function addAudio(src,coordsRes) { //
     audio.play();
   });
   // const posMax = left + timeLine.offsetWidth;
-  const iteration = timeLine.offsetWidth/audio.duration;
+  const iteration = timeLine.offsetWidth/secondsSum;
+  secondsSum = 0;
   function draw() {
     ball.style.left =  `${ball.style.left + iteration}px`;
   }
