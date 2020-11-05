@@ -14,6 +14,7 @@ let seconds = 0;
 let minutes = 0;
 let currentSource;
 let srcAudio;
+let srcVideo;
 let recordMode;
 
 

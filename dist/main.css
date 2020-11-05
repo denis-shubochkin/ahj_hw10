@@ -197,6 +197,8 @@ body {
 }
 
 .temp-video {
+  top: 100px;
+  left: 100px;
   display: none;
   width: 400px;
   height: 200px;
