@@ -270,8 +270,8 @@ function addAudio(src,coordsRes) { //
   playBut.addEventListener('click', () => {
     audio.play();
     let animation = ball.animate([
-      {transform: 'left: 0px'},
-      {transform: 'left: 150px'}
+      {left: '0px'},
+      {left: '150px'}
     ],  audio.currentTime);
     animation.addEventListener('finish', function() {
       ball.style.left = '0px';
