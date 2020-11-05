@@ -272,7 +272,7 @@ function addAudio(src,coordsRes) { //
   });
   // const posMax = left + timeLine.offsetWidth;
   audio.addEventListener('timeupdate', (evt) => {
-    ball.style.left =  `${ball.style.left + 10}px`;
+    ball.style.left =  `${ball.getBoundingClientRect().left + 10}px`;
   })
   audio.addEventListener('ended', () => {
     ball.style.left = `${left+5}px`;
