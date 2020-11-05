@@ -189,6 +189,7 @@ videoBut.addEventListener('click' , () => {
         video: true
       });
       video.style.display = 'block';
+      video.style.zIndex = 999;
       video.srcObject = stream;
       video.play();
       const recorder = new MediaRecorder(stream);
@@ -204,7 +205,8 @@ videoBut.addEventListener('click' , () => {
       recorder.addEventListener('stop', () => {
         endDate = new Date();
         globalDuration = endDate - startDate;
-        video.style.display = 'block';
+        video.style.display = 'none';
+        video.style.zIndex = 0;
         console.log('recording stop');
         if(recordMode==='save')
         {
