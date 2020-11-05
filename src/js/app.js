@@ -17,6 +17,9 @@ let currentSource;
 let srcAudio;
 let srcVideo;
 let recordMode;
+let startDate = 0;
+let endDate = 0;
+let globalDuration;
 
 
 
@@ -71,6 +74,7 @@ audioBut.addEventListener('click' , () => {
       const recorder = new MediaRecorder(stream);
       const chunks = [];
       recorder.addEventListener('start', () => {
+        startDate = new Date();
         console.log('recording start');
       })
       recorder.addEventListener('dataavailable', (evt) => {
@@ -78,6 +82,8 @@ audioBut.addEventListener('click' , () => {
         chunks.push(evt.data);
       });
       recorder.addEventListener('stop', () => {
+        endDate = new Date();
+        globalDuration = endDate - startDate;
         console.log('recording stop');
         if(recordMode==='save')
         {
@@ -189,12 +195,15 @@ videoBut.addEventListener('click' , () => {
       const chunks = [];
       recorder.addEventListener('start', () => {
         console.log('recording start');
+        startDate = new Date();
       })
       recorder.addEventListener('dataavailable', (evt) => {
         console.log('data available');
         chunks.push(evt.data);
       });
       recorder.addEventListener('stop', () => {
+        endDate = new Date();
+        globalDuration = endDate - startDate;
         video.style.display = 'block';
         console.log('recording stop');
         if(recordMode==='save')
@@ -414,16 +423,15 @@ function addAudio(src,coordsRes) { //
   let circle = document.createElement('div');
   circle.classList.add('circle');
   post.appendChild(circle);
-  audio.play();
-  audio.pause();
   playBut.addEventListener('click', () => {
-    let duration = secondsSum;
+    let duration = globalDuration;
+    globalDuration = 0;
     secondsSum = 0;
     audio.play();
     let animation = ball.animate([
       {left: '0px'},
       {left: `${timeLine.offsetWidth}px`}
-    ],  duration*1000);
+    ],  duration);
     animation.addEventListener('finish', function() {
       ball.style.left = '0px';
     });
@@ -472,16 +480,15 @@ function addVideo(src,coordsRes) { //
   let circle = document.createElement('div');
   circle.classList.add('circle');
   post.appendChild(circle);
-  videoRecord.play();
-  videoRecord.pause();
   playBut.addEventListener('click', () => {
-    const duration = 
+    let duration = globalDuration;
+    globalDuration = 0;
     playBut.style.display = 'none';
     videoRecord.play();
     let animation = ball.animate([
       {left: '0px'},
       {left: `${timeLine.offsetWidth}px`}
-    ],  videoRecord.duration*1000);
+    ],  duration);
     animation.addEventListener('finish', function() {
       ball.style.left = '0px';
     });
