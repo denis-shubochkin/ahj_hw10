@@ -271,8 +271,8 @@ function addAudio(src,coordsRes) { //
     audio.play();
     let animation = ball.animate([
       {left: '0px'},
-      {left: '150px'}
-    ],  audio.currentTime);
+      {left: `${timeLine.offsetWidth}px`}
+    ],  audio.currentTime*1000);
     animation.addEventListener('finish', function() {
       ball.style.left = '0px';
     });
