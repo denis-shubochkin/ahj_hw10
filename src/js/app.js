@@ -254,8 +254,8 @@ function addAudio(src,coordsRes) { //
   ball.classList.add('ball');
   post.appendChild(ball);
   const {top,left} = timeLine.getBoundingClientRect();
-  ball.style.top = `${top}px`;
-  ball.style.left = `${left+5}px`;
+  ball.style.top = `${top - 11}px`;
+  ball.style.left = `${left}px`;
   let audio = document.createElement('audio');
   audio.classList.add('audio');
   audio.src = src;
@@ -272,9 +272,10 @@ function addAudio(src,coordsRes) { //
   });
   // const posMax = left + timeLine.offsetWidth;
   audio.addEventListener('timeupdate', (evt) => {
+    console.log(evt);
     ball.style.left =  `${ball.getBoundingClientRect().left + 10}px`;
   })
   audio.addEventListener('ended', () => {
-    ball.style.left = `${left+5}px`;
+    ball.style.left = `${left}px`;
   })
 }
