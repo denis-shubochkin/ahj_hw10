@@ -171,7 +171,7 @@ body {
   position: absolute;
 }
 
-.audio-content {
+.play-button-audio {
   border: none;
   outline: none;
   width: 50px;
@@ -194,4 +194,12 @@ body {
   width: 10px;
   height: 10px;
   position: absolute;
+}
+
+.temp-video {
+  display: none;
+  width: 400px;
+  height: 200px;
+  position: absolute;
+  z-index: 0;
 }

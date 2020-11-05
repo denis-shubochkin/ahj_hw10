@@ -12,7 +12,6 @@ const cancelBut = document.querySelector('.cancel-button');
 const timer = document.querySelector('.timer');
 let seconds = 0;
 let minutes = 0;
-let secondsSum = 0;
 let currentSource;
 let srcAudio;
 let recordMode;
@@ -37,7 +36,6 @@ placeAudioVideo();
 
 function timerC() {
   seconds += 1;
-  secondsSum += 1;
   let secondsRes = seconds.toString().padStart(2,0);
   if(seconds === 60)
   {
@@ -137,10 +135,151 @@ audioBut.addEventListener('click' , () => {
       cancelBut.addEventListener('click', cancelAudio);
     }
     catch (e) {
-      console.error(e);
+        if(!window.Notification) {
+          alert("This browser does not support desktop notification");
+          return;
+        }
+        if(Notification.permission === 'granted')
+        {
+          const notification = new Notification('Устройство не распознано', {
+            body: 'Микрофон не найден или отключен в браузере'
+          })
+          return
+        }
+        else
+        {
+          Notification.requestPermission(function (permission) {
+            if(permission === 'granted') {
+              const notification = new Notification('Устройство не распознано', {
+                body: 'Микрофон не найден или отключен в браузере'
+              })
+          };
+          })
+        }
     }
   })()
 })
+
+
+videoBut.addEventListener('click' , () => {
+  (async() => {
+    if(!navigator.mediaDevices)
+    {
+      console.log(1)
+      return;
+    }
+    if(!window.MediaRecorder)
+    {
+      console.log(1)
+      return;
+    }
+    try {
+      const video = document.querySelector('.temp-video');
+      const stream = await navigator.mediaDevices.getUserMedia({
+        audio: true,
+        video: true
+      });
+      video.style.display = 'block';
+      video.srcObject = stream;
+      video.play();
+      const recorder = new MediaRecorder(stream);
+      const chunks = [];
+      recorder.addEventListener('start', () => {
+        console.log('recording start');
+      })
+      recorder.addEventListener('dataavailable', (evt) => {
+        console.log('data available');
+        chunks.push(evt.data);
+      });
+      recorder.addEventListener('stop', () => {
+        video.style.display = 'block';
+        console.log('recording stop');
+        if(recordMode==='save')
+        {
+          const blob = new Blob(chunks);
+          srcVideo = URL.createObjectURL(blob);
+            if(navigator.geolocation) {
+              navigator.geolocation.getCurrentPosition((pos) => {
+                let coordsRes = pos.coords;
+                addVideo(srcVideo, coordsRes);
+              }, () => {
+                currentSource = 'video';
+                enterCoords.style.display = 'block';
+                input.setAttribute("readonly", true);
+              });
+            }
+            audioBut.style.display = 'block';
+            videoBut.style.display = 'block';
+            saveBut.style.display = 'none';
+            cancelBut.style.display = 'none';
+            timer.style.display = 'none';
+            saveBut.removeEventListener('click', saveVideo);
+        }
+        else {
+            audioBut.style.display = 'block';
+            videoBut.style.display = 'block';
+            saveBut.style.display = 'none';
+            cancelBut.style.display = 'none';
+            timer.style.display = 'none';
+            saveBut.removeEventListener('click', saveVideo);
+        }
+      })
+      audioBut.style.display = 'none';
+      videoBut.style.display = 'none';
+      saveBut.style.display = 'block';
+      cancelBut.style.display = 'block';
+      timer.style.display = 'block';
+      let intId = setInterval(timerC,1000);
+      recorder.start();
+      
+      function saveVideo() {
+        recordMode = 'save';
+          clearInterval(intId);
+          minutes = 0;
+          seconds = 0;
+          video.srcObject = null;
+          recorder.stop();
+          stream.getTracks().forEach(track => track.stop());
+      }
+
+      function cancelVideo() {
+        recordMode = 'cancel';
+        clearInterval(intId);
+          minutes = 0;
+          seconds = 0;
+          video.srcObject = null;
+          recorder.stop();
+          stream.getTracks().forEach(track => track.stop());
+      }
+      saveBut.addEventListener('click', saveVideo)
+      cancelBut.addEventListener('click', cancelVideo);
+    }
+    catch (e) {
+        if(!window.Notification) {
+          alert("This browser does not support desktop notification");
+          return;
+        }
+        if(Notification.permission === 'granted')
+        {
+          const notification = new Notification('Устройство не распознано', {
+            body: 'Микрофон/Камера не найден или отключен в браузере'
+          })
+          return
+        }
+        else
+        {
+          Notification.requestPermission(function (permission) {
+            if(permission === 'granted') {
+              const notification = new Notification('Устройство не распознано', {
+                body: 'Микрофон/Камера не найден или отключен в браузере'
+              })
+          };
+          })
+        }
+    }
+  })()
+})
+
 
 cancel.addEventListener('click', () => {
   enterCoords.style.display = 'none';
@@ -176,6 +315,11 @@ function coordsWidget(currentSource) {
         }
         else if (currentSource === 'audio') {
           addAudio(srcAudio, {latitude: obj.latitude, longitude: obj.longitude});
+          enterCoords.style.display = 'none';
+          inputCoords.value = '';
+        }
+        else if (currentSource === 'video') {
+          addVideo(srcVideo, {latitude: obj.latitude, longitude: obj.longitude});
           enterCoords.style.display = 'none';
           inputCoords.value = '';
         }
@@ -245,7 +389,7 @@ function addAudio(src,coordsRes) { //
   dateEl.textContent = date;
   post.appendChild(dateEl);
   let playBut = document.createElement('button');
-  playBut.classList.add('audio-content');
+  playBut.classList.add('play-button-audio');
   post.appendChild(playBut);
   let timeLine = document.createElement('div');
   timeLine.classList.add('time-line');
@@ -283,6 +427,58 @@ function addAudio(src,coordsRes) { //
   //   ball.style.left =  `${ball.getBoundingClientRect().left + timeLine.offsetWidth/}px`;
   // })
   audio.addEventListener('ended', () => {
+    ball.style.left = `0px`;
+  })
+}
+
+function addVideo(src,coordsRes) { //
+  let date = new Date().toLocaleString();
+  let post = document.createElement('div');
+  post.classList.add('post');
+  posts.prepend(post);
+  let dateEl = document.createElement('div');
+  dateEl.classList.add('date');
+  dateEl.textContent = date;
+  post.appendChild(dateEl);
+  let playBut = document.createElement('button');
+  playBut.classList.add('play-button-video');
+  post.appendChild(playBut);
+  let timeLine = document.createElement('div');
+  timeLine.classList.add('time-line');
+  post.appendChild(timeLine);
+  let ball = document.createElement('div');
+  ball.classList.add('ball');
+  post.appendChild(ball);
+  const {top,left} = timeLine.getBoundingClientRect();
+  ball.style.top = `${top - 11}px`;
+  ball.style.left = `0px`;
+  let videoRecord = document.createElement('video');
+  videoRecord.classList.add('video');
+  video.src = src;
+  post.appendChild(video);
+  let coords = document.createElement('div');
+  coords.classList.add('coords');
+  coords.textContent = `[${coordsRes.latitude.toFixed(5)}, ${coordsRes.longitude.toFixed(5)}]`;
+  post.appendChild(coords);
+  let circle = document.createElement('div');
+  circle.classList.add('circle');
+  post.appendChild(circle);
+  playBut.addEventListener('click', () => {
+    video.play();
+    let animation = ball.animate([
+      {left: '0px'},
+      {left: `${timeLine.offsetWidth}px`}
+    ],  video.duration*1000);
+    animation.addEventListener('finish', function() {
+      ball.style.left = '0px';
+    });
+  });
+  // const posMax = left + timeLine.offsetWidth;
+  // audio.addEventListener('timeupdate', (evt) => {
+  //   console.log(evt);
+  //   ball.style.left =  `${ball.getBoundingClientRect().left + timeLine.offsetWidth/}px`;
+  // })
+  video.addEventListener('ended', () => {
     ball.style.left = `0px`;
   })
 }
