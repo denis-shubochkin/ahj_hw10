@@ -415,7 +415,7 @@ function addAudio(src,coordsRes) { //
   circle.classList.add('circle');
   post.appendChild(circle);
   audio.play();
-  audio.stop();
+  audio.pause();
   playBut.addEventListener('click', () => {
     let duration = secondsSum;
     secondsSum = 0;
@@ -473,7 +473,7 @@ function addVideo(src,coordsRes) { //
   circle.classList.add('circle');
   post.appendChild(circle);
   videoRecord.play();
-  videoRecord.stop();
+  videoRecord.pause();
   playBut.addEventListener('click', () => {
     const duration = 
     playBut.style.display = 'none';
