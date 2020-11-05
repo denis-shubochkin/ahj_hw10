@@ -267,16 +267,25 @@ function addAudio(src,coordsRes) { //
   let circle = document.createElement('div');
   circle.classList.add('circle');
   post.appendChild(circle);
+  audio.duration = secondsSum;
+  const iteration = timeLine.offsetWidth/secondsSum;
+  secondsSum = 0;
   playBut.addEventListener('click', () => {
+    let s = 0;
+    let ballInt = setInterval(ballMove, 1000);
     audio.play();
   });
   // const posMax = left + timeLine.offsetWidth;
-  const iteration = timeLine.offsetWidth/secondsSum;
-  secondsSum = 0;
-  function draw() {
+  audio.addEventListener('ended', (evt) => {
+    clearInterval(ballInt);
+    ball.style.left = `${left+5}px`;
+  })
+}
+
+function ballMove() {
+  s+=1;
+  if(s<=audio.duration)
+  {
     ball.style.left =  `${ball.style.left + iteration}px`;
   }
-  audio.addEventListener('timeupdate', (evt) => {
-    draw();
-  })
 }
