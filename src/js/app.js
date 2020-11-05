@@ -272,7 +272,7 @@ function addAudio(src,coordsRes) { //
     let animation = ball.animate([
       {left: '0px'},
       {left: `${timeLine.offsetWidth}px`}
-    ],  audio.currentTime*1000);
+    ],  audio.duration*1000);
     animation.addEventListener('finish', function() {
       ball.style.left = '0px';
     });
