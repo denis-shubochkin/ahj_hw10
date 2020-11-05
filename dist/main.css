@@ -127,6 +127,7 @@ body {
 }
 
 .video-button {
+  cursor: pointer;
   border: none;
   outline: none;
   width: 30px;
@@ -207,6 +208,7 @@ body {
 }
 
 .play-button-video {
+  border-radius: 50%;
   position: absolute;
   border: none;
   outline: none;
@@ -216,6 +218,7 @@ body {
   background-repeat: no-repeat;
   background-size: cover;
   cursor: pointer;
+  z-index: 10;
 }
 
 .video {

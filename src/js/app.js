@@ -441,9 +441,6 @@ function addVideo(src,coordsRes) { //
   dateEl.classList.add('date');
   dateEl.textContent = date;
   post.appendChild(dateEl);
-  let timeLine = document.createElement('div');
-  timeLine.classList.add('time-line');
-  post.appendChild(timeLine);
   let ball = document.createElement('div');
   ball.classList.add('ball');
   post.appendChild(ball);
@@ -456,9 +453,12 @@ function addVideo(src,coordsRes) { //
   post.appendChild(videoRecord);
   let playBut = document.createElement('button');
   playBut.classList.add('play-button-video');
-  playBut.style.top = `${videoRecord.offsetHeight/2}px`
-  playBut.style.left = `${videoRecord.offsetWidth/2}px`
+  playBut.style.top = `${videoRecord.offsetHeight/2}px`;
+  playBut.style.left = `${videoRecord.offsetWidth/2}px`;
   post.appendChild(playBut);
+  let timeLine = document.createElement('div');
+  timeLine.classList.add('time-line');
+  post.appendChild(timeLine);
   let coords = document.createElement('div');
   coords.classList.add('coords');
   coords.textContent = `[${coordsRes.latitude.toFixed(5)}, ${coordsRes.longitude.toFixed(5)}]`;
