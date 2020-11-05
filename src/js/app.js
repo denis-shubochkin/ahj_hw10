@@ -12,6 +12,7 @@ const cancelBut = document.querySelector('.cancel-button');
 const timer = document.querySelector('.timer');
 let seconds = 0;
 let minutes = 0;
+let secondsSum;
 let currentSource;
 let srcAudio;
 let srcVideo;
@@ -37,6 +38,7 @@ placeAudioVideo();
 
 function timerC() {
   seconds += 1;
+  secondsSum+=1;
   let secondsRes = seconds.toString().padStart(2,0);
   if(seconds === 60)
   {
@@ -412,12 +414,16 @@ function addAudio(src,coordsRes) { //
   let circle = document.createElement('div');
   circle.classList.add('circle');
   post.appendChild(circle);
+  audio.play();
+  audio.stop();
   playBut.addEventListener('click', () => {
+    let duration = secondsSum;
+    secondsSum = 0;
     audio.play();
     let animation = ball.animate([
       {left: '0px'},
       {left: `${timeLine.offsetWidth}px`}
-    ],  audio.duration*1000);
+    ],  duration*1000);
     animation.addEventListener('finish', function() {
       ball.style.left = '0px';
     });
@@ -466,7 +472,10 @@ function addVideo(src,coordsRes) { //
   let circle = document.createElement('div');
   circle.classList.add('circle');
   post.appendChild(circle);
+  videoRecord.play();
+  videoRecord.stop();
   playBut.addEventListener('click', () => {
+    const duration = 
     playBut.style.display = 'none';
     videoRecord.play();
     let animation = ball.animate([
