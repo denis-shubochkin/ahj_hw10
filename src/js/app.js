@@ -16,6 +16,8 @@ let currentSource;
 let srcAudio;
 let recordMode;
 
+
+
 function placeAudioVideo() {
   const {top, left} = input.getBoundingClientRect();
   audioBut.style.top = `${top - 5}px`;
@@ -231,7 +233,7 @@ function addText(text,coordsRes) {
   input.value = '';
 }
 
-function addAudio(src,coordsRes) {
+function addAudio(src,coordsRes) { //
   let date = new Date().toLocaleString();
   let post = document.createElement('div');
   post.classList.add('post');
@@ -266,12 +268,12 @@ function addAudio(src,coordsRes) {
   playBut.addEventListener('click', () => {
     audio.play();
   });
-  //const posMax = left + timeLine.offsetWidth;
+  // const posMax = left + timeLine.offsetWidth;
   const iteration = timeLine.offsetWidth/audio.duration;
   function draw() {
     ball.style.left =  `${ball.style.left + iteration}px`;
   }
   audio.addEventListener('timeupdate', (evt) => {
-    window.requestAnimationFrame(draw);
+    draw();
   })
 }
