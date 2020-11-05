@@ -426,9 +426,14 @@ function addAudio(src,coordsRes) { //
   circle.classList.add('circle');
   post.appendChild(circle);
   playBut.addEventListener('click', () => {
-    let duration = globalDuration;
-    globalDuration = 0;
-    secondsSum = 0;
+    let duration;
+    if(audio.duration===Infinity) {
+      duration = globalDuration;
+      globalDuration = 0;
+    }
+    else {
+      duration = audio.duration;
+    }
     audio.play();
     let animation = ball.animate([
       {left: '0px'},
@@ -483,8 +488,14 @@ function addVideo(src,coordsRes) { //
   circle.classList.add('circle');
   post.appendChild(circle);
   playBut.addEventListener('click', () => {
-    let duration = globalDuration;
-    globalDuration = 0;
+    let duration;
+    if(videoRecord.duration===Infinity) {
+      duration = globalDuration;
+      globalDuration = 0;
+    }
+    else {
+      duration = videoRecord.duration;
+    }
     playBut.style.display = 'none';
     videoRecord.play();
     let animation = ball.animate([
