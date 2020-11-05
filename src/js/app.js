@@ -99,21 +99,14 @@ audioBut.addEventListener('click' , () => {
                 input.setAttribute("readonly", true);
               });
             }
+        }
             audioBut.style.display = 'block';
             videoBut.style.display = 'block';
             saveBut.style.display = 'none';
             cancelBut.style.display = 'none';
             timer.style.display = 'none';
+            timer.textContent = '00:00';
             saveBut.removeEventListener('click', saveAudio);
-        }
-        else {
-            audioBut.style.display = 'block';
-            videoBut.style.display = 'block';
-            saveBut.style.display = 'none';
-            cancelBut.style.display = 'none';
-            timer.style.display = 'none';
-            saveBut.removeEventListener('click', saveAudio);
-        }
       })
       audioBut.style.display = 'none';
       videoBut.style.display = 'none';
@@ -205,6 +198,7 @@ videoBut.addEventListener('click' , () => {
       recorder.addEventListener('stop', () => {
         endDate = new Date();
         globalDuration = endDate - startDate;
+        timer.textContent = '00:00';
         video.style.display = 'none';
         video.style.zIndex = 0;
         console.log('recording stop');
@@ -222,21 +216,14 @@ videoBut.addEventListener('click' , () => {
                 input.setAttribute("readonly", true);
               });
             }
+        }
             audioBut.style.display = 'block';
             videoBut.style.display = 'block';
             saveBut.style.display = 'none';
             cancelBut.style.display = 'none';
             timer.style.display = 'none';
+            timer.textContent = '00:00';
             saveBut.removeEventListener('click', saveVideo);
-        }
-        else {
-            audioBut.style.display = 'block';
-            videoBut.style.display = 'block';
-            saveBut.style.display = 'none';
-            cancelBut.style.display = 'none';
-            timer.style.display = 'none';
-            saveBut.removeEventListener('click', saveVideo);
-        }
       })
       audioBut.style.display = 'none';
       videoBut.style.display = 'none';
@@ -432,7 +419,7 @@ function addAudio(src,coordsRes) { //
       globalDuration = 0;
     }
     else {
-      duration = audio.duration;
+      duration = audio.duration*1000;
     }
     audio.play();
     let animation = ball.animate([
@@ -494,7 +481,7 @@ function addVideo(src,coordsRes) { //
       globalDuration = 0;
     }
     else {
-      duration = videoRecord.duration;
+      duration = videoRecord.duration*1000;
     }
     playBut.style.display = 'none';
     videoRecord.play();
