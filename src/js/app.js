@@ -255,7 +255,7 @@ function addAudio(src,coordsRes) { //
   post.appendChild(ball);
   const {top,left} = timeLine.getBoundingClientRect();
   ball.style.top = `${top - 11}px`;
-  ball.style.left = `${left}px`;
+  ball.style.left = `0px`;
   let audio = document.createElement('audio');
   audio.classList.add('audio');
   audio.src = src;
@@ -269,13 +269,20 @@ function addAudio(src,coordsRes) { //
   post.appendChild(circle);
   playBut.addEventListener('click', () => {
     audio.play();
+    let animation = ball.animate([
+      {transform: 'left: 0px'},
+      {transform: 'left: 150px'}
+    ],  audio.currentTime);
+    animation.addEventListener('finish', function() {
+      ball.style.left = '0px';
+    });
   });
   // const posMax = left + timeLine.offsetWidth;
-  audio.addEventListener('timeupdate', (evt) => {
-    console.log(evt);
-    ball.style.left =  `${ball.getBoundingClientRect().left + 10}px`;
-  })
+  // audio.addEventListener('timeupdate', (evt) => {
+  //   console.log(evt);
+  //   ball.style.left =  `${ball.getBoundingClientRect().left + timeLine.offsetWidth/}px`;
+  // })
   audio.addEventListener('ended', () => {
-    ball.style.left = `${left}px`;
+    ball.style.left = `0px`;
   })
 }
