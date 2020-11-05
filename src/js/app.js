@@ -453,7 +453,7 @@ function addVideo(src,coordsRes) { //
   let videoRecord = document.createElement('video');
   videoRecord.classList.add('video');
   videoRecord.src = src;
-  post.appendChild(video);
+  post.appendChild(videoRecord);
   let playBut = document.createElement('button');
   playBut.classList.add('play-button-video');
   playBut.style.top = `${videoRecord.offsetHeight/2}px`
@@ -467,11 +467,11 @@ function addVideo(src,coordsRes) { //
   circle.classList.add('circle');
   post.appendChild(circle);
   playBut.addEventListener('click', () => {
-    video.play();
+    videoRecord.play();
     let animation = ball.animate([
       {left: '0px'},
       {left: `${timeLine.offsetWidth}px`}
-    ],  video.duration*1000);
+    ],  videoRecord.duration*1000);
     animation.addEventListener('finish', function() {
       ball.style.left = '0px';
     });
@@ -481,7 +481,7 @@ function addVideo(src,coordsRes) { //
   //   console.log(evt);
   //   ball.style.left =  `${ball.getBoundingClientRect().left + timeLine.offsetWidth/}px`;
   // })
-  video.addEventListener('ended', () => {
+  videoRecord.addEventListener('ended', () => {
     ball.style.left = `0px`;
   })
 }
