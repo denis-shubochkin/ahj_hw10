@@ -1,3 +1,5 @@
+[![Build status](https://ci.appveyor.com/api/projects/status/vlma2flbjlryilv9?svg=true)](https://ci.appveyor.com/project/denis-shubochkin/ahj-hw10)
+
 https://denis-shubochkin.github.io/ahj_hw10/
 
 **Важно**: в рамках этого задания вы будете разрабатывать **один проект**, в который добавляется новая функциональность. Поэтому все три задачи нужно делать в одном репозитории (не забудьте опубликовать проект на GitHub Pages).
