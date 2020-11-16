@@ -1,3 +1,5 @@
+import userCoords from './coords';
+
 const input = document.querySelector('.input');
 const posts = document.querySelector('.posts');
 const enterCoords = document.querySelector('.enter-coords');
@@ -19,16 +21,6 @@ let startDate = 0;
 let endDate = 0;
 let globalDuration;
 
-export default function userCoords(string) {
-  if (string !== '' && string.indexOf(',') !== -1) {
-    const latitude = string.slice(0, string.indexOf(',')).trim().replace(/\[|\]/g, '');
-    const longitude = string.slice(string.indexOf(',') + 1).trim().replace(/\[|\]/g, '');
-    if (latitude.indexOf('.') !== -1 && longitude.indexOf('.') !== -1) {
-      return { result: true, latitude: Number(latitude), longitude: Number(longitude) };
-    }
-  }
-  throw new Error('Введен некорректный формат данных');
-}
 
 function addText(text, coordsRes) {
   const date = new Date().toLocaleString();
